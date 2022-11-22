@@ -1,0 +1,33 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "vnetAName": {
+            "value": "hackathonsharedvnet"
+        },
+        "vnetBName": {
+            "value": "hackathonchallenge4vnet"
+        },
+        "vnetAPrefix": {
+            "value": "10.50.0.0/16"
+        },
+        "vnetBPrefix": {
+            "value": "10.54.0.0/16"
+        },
+        "subscriptionAID": {
+            "value": "feb87e96-6e72-4613-8c2f-5285d9b68587"
+        },
+        "resourceGroupAName": {
+            "value": "HackathonShared"
+        },
+        "subscriptionBID": {
+            "value": "feb87e96-6e72-4613-8c2f-5285d9b68587"
+        },
+        "resourceGroupBName": {
+            "value": "HackathonChallenge4"
+        },
+        "location": {
+            "value": "eastus"
+        }
+    }
+}

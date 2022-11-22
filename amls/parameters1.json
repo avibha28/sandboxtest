@@ -1,0 +1,62 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "location": {
+            "value": "eastus"
+        },
+        "workspaceName": {
+            "value": "hackteam{{TEAMCOUNT}}{{NAME}}wp"
+        },
+        "resourceGroupName": {
+            "value": "{{RG}}"
+        },
+        "sku": {
+            "value": "Basic"
+        },
+        "tagValues": {
+            "value": {
+                "serviceName": "bis-information"
+            }
+        },
+        "keyVaultName": {
+            "value": "hackteam{{TEAMCOUNT}}{{NAME}}am17016"
+        },
+        "storageAccountName": {
+            "value": "hackteam{{TEAMCOUNT}}{{NAME}}am18114"
+        },
+        "applicationInsightsName": {
+            "value": "hackteam{{TEAMCOUNT}}{{NAME}}am98219"
+        },
+        "softDeleteEnabled": {
+            "value": "true"
+        },
+        "storageAccountOption": {
+            "value": "new"
+        },
+        "storageAccountHnsEnabled": {
+            "value": false
+        },
+        "keyVaultOption": {
+            "value": "new"
+        },
+        "applicationInsightsOption": {
+            "value": "new"
+        },
+        "containerRegistryOption": {
+            "value": "new"
+        },
+        "containerRegistryName": {
+            "value": "hackteam{{TEAMCOUNT}}{{NAME}}cr"
+        },
+        "containerRegistrySku": {
+            "value": "Standard"
+        },
+        "identityType": {
+            "value": "systemAssigned"
+        },
+        "publicNetworkAccess": {
+            "value": "Enabled"
+        }
+    }
+}

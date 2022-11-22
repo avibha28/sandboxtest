@@ -1,0 +1,181 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-08-01/managementGroupDeploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "vnetAName": {
+            "type": "string",
+            "defaultValue":"ansuman-vnet",
+            "metadata": {
+                "description": "Name of the first VNET"
+            }
+        },
+        "vnetBName": {
+            "type": "string",
+            "defaultValue":"vnet-ansuman",
+            "metadata": {
+                "description": "Name of the Second VNET"
+            }
+        },
+        "vnetAPrefix": {
+            "type": "string",
+            "defaultValue": "10.0.0.0/16",
+            "metadata": {
+                "description": "Prefix of the first VNET"
+            }
+        },
+        "vnetBPrefix": {
+            "type": "string",
+            "defaultValue": "10.1.0.0/16",
+            "metadata": {
+                "description": "Prefix of the Second VNET"
+            }
+        },
+        "subscriptionAID": {
+            "type": "string",
+            "metadata": {
+                "description": "the Subscription ID for the first VNET"
+            },
+            "defaultValue": "subA"
+
+        },
+        "resourceGroupAName": {
+            "type": "string",
+            "defaultValue": "ansumantest",
+            "metadata": {
+                "description": "the resource group name for the first VNET"
+            }
+        },
+        "subscriptionBID": {
+            "type": "string",
+            "defaultValue": "subB",
+            "metadata": {
+                "description": "the Subscription ID for the second VNET"
+            }
+        },
+        "resourceGroupBName": {
+            "type": "string",
+            "defaultValue": "rgB",
+            "metadata": {
+                "description": "the resource group name for the second VNET"
+            }
+        },
+        "location": {
+            "type": "string",
+            "defaultValue": "West US 2"
+        }
+    },
+    "variables": {
+        "vnetAtoVnetBPeeringName": "[concat(parameters('vnetAName'),'-to-',parameters('vnetBName'))]",
+        "vnetBtoVnetAPeeringName": "[concat(parameters('vnetBName'),'-to-',parameters('vnetAName'))]"
+    },
+    "resources": [
+        {
+            "apiVersion": "2020-06-01",
+            "name": "createPeeringAtoB",
+            "type": "Microsoft.Resources/deployments",
+            "location": "[parameters('location')]",
+            "subscriptionId": "[parameters('subscriptionAID')]",
+            "properties": {
+                "mode": "Incremental",
+                "template": {
+                    "$schema": "https://schema.management.azure.com/schemas/2019-08-01/subscriptionDeploymentTemplate.json#",
+                    "contentVersion": "1.0.0.0",
+                    "parameters": {},
+                    "variables": {},
+                    "resources": [
+                        {
+                            "type": "Microsoft.Resources/deployments",
+                            "apiVersion": "2020-06-01",
+                            "name": "createNetworkPeeringfromA",
+                            "location": "[parameters('location')]",
+                            "properties": {
+                                  "mode": "Incremental",
+                                  "template": {
+                                  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+                                  "contentVersion": "1.0.0.0",
+                                  "resources": [
+                                    {
+                                        "type": "Microsoft.Network/virtualNetworks/virtualNetworkPeerings",
+                                        "apiVersion": "2020-05-01",
+                                        "name": "[concat(parameters('vnetAName'), '/', variables('vnetAtoVnetBPeeringName'))]",
+                                        "properties": {
+                                            "peeringState": "Connected",
+                                            "remoteVirtualNetwork": {
+                                                "id": "[concat('/subscriptions/',parameters('subscriptionBID'),'/resourceGroups/',parameters('resourceGroupBName'),'/providers/Microsoft.Network/virtualNetworks/', parameters('vnetBName'))]"
+                                            },
+                                            "allowVirtualNetworkAccess": true,
+                                            "allowForwardedTraffic": true,
+                                            "allowGatewayTransit": false,
+                                            "useRemoteGateways": false,
+                                            "remoteAddressSpace": {
+                                                "addressPrefixes": [
+                                                    "[parameters('vnetBPrefix')]"
+                                                ]
+                                            }
+                                        }
+                                    }
+                                  ]
+                                }
+                            }
+                        }
+                    ]
+                }
+            }
+        },
+        {
+            "apiVersion": "2020-06-01",
+            "name": "createPeeringBtoA",
+            "type": "Microsoft.Resources/deployments",
+            "location": "[parameters('location')]",
+            "subscriptionId": "[parameters('subscriptionAID')]",
+            "properties": {
+                "mode": "Incremental",
+                "template": {
+                    "$schema": "https://schema.management.azure.com/schemas/2019-08-01/subscriptionDeploymentTemplate.json#",
+                    "contentVersion": "1.0.0.0",
+                    "parameters": {},
+                    "variables": {},
+                    "resources": [
+                        {
+                            "type": "Microsoft.Resources/deployments",
+                            "apiVersion": "2020-06-01",
+                            "name": "createNetworkPeeringfromB",
+                            "location": "[parameters('location')]",
+                            "properties": {
+                                  "mode": "Incremental",
+                                  "template": {
+                                  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+                                  "contentVersion": "1.0.0.0",
+                                  "resources": [
+                                    {
+                                        "type": "Microsoft.Network/virtualNetworks/virtualNetworkPeerings",
+                                        "apiVersion": "2020-05-01",
+                                        "name": "[concat(parameters('vnetBName'), '/', variables('vnetBtoVnetAPeeringName'))]",
+                                        "properties": {
+                                            "peeringState": "Connected",
+                                            "remoteVirtualNetwork": {
+                                                "id": "[concat('/subscriptions/',parameters('subscriptionAID'),'/resourceGroups/',parameters('resourceGroupAName'),'/providers/Microsoft.Network/virtualNetworks/', parameters('vnetAName'))]"
+                                            },
+                                            "allowVirtualNetworkAccess": true,
+                                            "allowForwardedTraffic": true,
+                                            "allowGatewayTransit": false,
+                                            "useRemoteGateways": false,
+                                            "remoteAddressSpace": {
+                                                "addressPrefixes": [
+                                                    "[parameters('vnetAPrefix')]"
+                                                ]
+                                            }
+                                        }
+                                    }
+                                  ]
+                                }
+                            }
+                        }
+                    ]
+                }
+            }
+        } 
+    ],
+    "outputs": {     
+    }
+}

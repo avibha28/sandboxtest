@@ -1,0 +1,51 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "location": {
+            "value": "eastus"
+        },
+        "networkInterfaceName": {
+            "value": "hackathonteam{{TEAMCOUNT}}vm81{{VMCOUNT}}"
+        },
+        "subnetName": {
+            "value": "default"
+        },
+        "virtualNetworkId": {
+            "value": "/subscriptions/feb87e96-6e72-4613-8c2f-5285d9b68587/resourceGroups/{{RG}}/providers/Microsoft.Network/virtualNetworks/hackathonchallenge{{TEAMCOUNT}}vnet"
+        },
+        "virtualMachineName": {
+            "value": "ht{{TEAMCOUNT}}vm{{VMCOUNT}}"
+        },
+        "virtualMachineComputerName": {
+            "value": "ht{{TEAMCOUNT}}vm{{VMCOUNT}}"
+        },
+        "virtualMachineRG": {
+            "value": "{{RG}}"
+        },
+        "osDiskType": {
+            "value": "StandardSSD_LRS"
+        },
+        "osDiskDeleteOption": {
+            "value": "Detach"
+        },
+        "virtualMachineSize": {
+            "value": "Standard_D2s_v3"
+        },
+        "nicDeleteOption": {
+            "value": "Delete"
+        },
+        "adminUsername": {
+            "value": "serveradmin"
+        },
+        "adminPassword": {
+            "value": "Pepsico@1234"
+        },
+        "patchMode": {
+            "value": "AutomaticByOS"
+        },
+        "enableHotpatching": {
+            "value": false
+        }
+    }
+}
